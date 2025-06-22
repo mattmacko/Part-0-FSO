@@ -1,1 +1,32 @@
-<pre> ```mermaid sequenceDiagram participant user participant browser participant server user->>browser: Write a new note and click "Save" Note right of browser: JavaScript prevents default form submission browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note with note content activate server server-->>browser: HTTP 302 Redirect to /notes deactivate server browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes activate server server-->>browser: HTML document deactivate server browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css activate server server-->>browser: CSS file deactivate server browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js activate server server-->>browser: JavaScript file deactivate server Note right of browser: JS fetches updated JSON data browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json activate server server-->>browser: Updated list of notes deactivate server Note right of browser: JS re-renders the notes ``` </pre>
+sequenceDiagram
+    participant browser
+    participant server
+    
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>browser: 302 URL redirect to /notes
+    deactivate server
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: CSS file
+    deactivate server
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: JavaScript file
+    deactivate server
+    
+    Note right of browser: Browser executes JavaScript code that fetches JSON data
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{"content": "new note", "date": "2023-1-1"}, ...]
+    deactivate server
+    
+    Note right of browser: Browser executes callback function that renders the notes
